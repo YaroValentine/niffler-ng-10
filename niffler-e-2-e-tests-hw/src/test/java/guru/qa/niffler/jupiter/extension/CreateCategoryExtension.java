@@ -1,5 +1,6 @@
 package guru.qa.niffler.jupiter.extension;
 
+import guru.qa.niffler.RandomDataUtils;
 import guru.qa.niffler.api.SpendApiClient;
 import guru.qa.niffler.jupiter.annotation.Category;
 import guru.qa.niffler.jupiter.annotation.User;
@@ -7,8 +8,6 @@ import guru.qa.niffler.model.CategoryJson;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
-
-import static guru.qa.niffler.RandomDataUtils.randomCategoryName;
 
 public class CreateCategoryExtension implements
     BeforeEachCallback,
@@ -29,7 +28,7 @@ public class CreateCategoryExtension implements
             Category categoryAnno = userAnno.categories()[0];
             CategoryJson category = new CategoryJson(
                 null,
-                randomCategoryName(),
+                RandomDataUtils.randomCategoryName(),
                 userAnno.username(),
                 categoryAnno.archived()
             );
@@ -68,7 +67,6 @@ public class CreateCategoryExtension implements
       spendApiClient.updateCategory(updatedCategory);
     }
   }
-
 
 
   @Override

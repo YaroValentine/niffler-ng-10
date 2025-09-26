@@ -6,7 +6,7 @@ public interface Config {
     return LocalConfig.INSTANCE;
   }
 
-String frontUrl();
+  String frontUrl();
 
   String authUrl();
 

@@ -24,6 +24,7 @@ public class ProfileWebTest {
   void archivedCategoryShouldPresentInCategoriesList(CategoryJson category) {
     Selenide.open(CFG.frontUrl(), LoginPage.class)
         .login("yaro", "secret")
+        .mainPage().checkThatPageLoaded()
         .profilePage().open()
         .clickShowArchivedCategories()
         .verifyCategoryExists(category.name());
@@ -39,6 +40,7 @@ public class ProfileWebTest {
   void activeCategoryShouldPresentInCategoriesList(CategoryJson category) {
     Selenide.open(CFG.frontUrl(), LoginPage.class)
         .login("yaro", "secret")
+        .mainPage().checkThatPageLoaded()
         .profilePage().open()
         .clickShowArchivedCategories()
         .verifyCategoryExists(category.name());

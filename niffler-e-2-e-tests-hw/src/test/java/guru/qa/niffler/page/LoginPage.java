@@ -2,7 +2,9 @@ package guru.qa.niffler.page;
 
 import com.codeborne.selenide.SelenideElement;
 
-import static com.codeborne.selenide.Condition.text;
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 
 public class LoginPage extends BasePage<LoginPage> {
@@ -15,7 +17,8 @@ public class LoginPage extends BasePage<LoginPage> {
 
   @Override
   public LoginPage checkThatPageLoaded() {
-    return null;
+    usernameInput.shouldBe(visible);
+    return this;
   }
 
   public LoginPage login(String username, String password) {
