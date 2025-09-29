@@ -6,6 +6,7 @@ import guru.qa.niffler.model.CurrencyValues;
 import io.qameta.allure.Step;
 
 import java.io.File;
+import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
@@ -14,10 +15,10 @@ import static com.codeborne.selenide.Selenide.$x;
 
 public class ProfilePage extends BasePage<ProfilePage> {
 
-  public final static String URL = "http://127.0.0.1:3000/profile";
+  public final static String URL = "http://localhost:3000/profile";
 
   final SelenideElement
-      profileAvatar = $("profile__avatar"),
+      pageTitleProfile = $x("//h2[text()='Profile']"),
       firstNameFld = $("input[name='firstname']"),
       sureNameFld = $("input[name='surname']"),
       submitBtn = $("button[type='submit']"),
@@ -28,14 +29,14 @@ public class ProfilePage extends BasePage<ProfilePage> {
       spendingCategoriesTbl = $(".main-content__section-categories ul"),
       showArchivedTgl = $x("//input[@type='checkbox']");
 
-
   public ProfilePage open() {
     Selenide.open(URL);
+    checkThatPageLoaded();
     return this;
   }
 
   public ProfilePage checkThatPageLoaded() {
-    profileAvatar.should(visible);
+    pageTitleProfile.should(visible, Duration.ofSeconds(5));
     return this;
   }
 
@@ -77,7 +78,7 @@ public class ProfilePage extends BasePage<ProfilePage> {
 
   @Step("Click on Avatar")
   public ProfilePage clickOnAvatar() {
-    profileAvatar.click();
+    pageTitleProfile.click();
     return this;
   }
 
