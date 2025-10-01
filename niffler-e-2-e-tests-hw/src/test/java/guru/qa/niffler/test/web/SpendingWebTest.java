@@ -24,7 +24,7 @@ public class SpendingWebTest {
           amount = 79990
       )
   )
-//  @DisabledByIssue("3")
+  @DisabledByIssue("3")
   @Test
   void categoryDescriptionShouldBeChangedFromTable(SpendJson spend) {
     final String newDescription = "Обучение Niffler Next Generation";
