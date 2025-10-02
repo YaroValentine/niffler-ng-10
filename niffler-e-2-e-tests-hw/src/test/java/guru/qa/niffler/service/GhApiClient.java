@@ -26,8 +26,6 @@ public class GhApiClient {
       "Bearer " + System.getenv(GH_TOKEN_ENV),
       issueNumber
     ).execute().body();
-    System.out.println("ENV GITHUB_TOKEN=" + System.getenv("GITHUB_TOKEN"));
-    System.out.println("PROP github.token=" + System.getProperty("github.token"));
     return Objects.requireNonNull(responseBody).get("state").asText();
   }
 }
