@@ -9,12 +9,12 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 
-public class CreateCategoryExtension implements
+public class CategoryExtension implements
     BeforeEachCallback,
     AfterEachCallback,
     ParameterResolver {
 
-  public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(CreateCategoryExtension.class);
+  public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(CategoryExtension.class);
 
   private final SpendApiClient spendApiClient = new SpendApiClient();
 

@@ -12,7 +12,6 @@ import static guru.qa.niffler.jupiter.extension.UsersQueueExtension.StaticUser;
 import static guru.qa.niffler.jupiter.extension.UsersQueueExtension.UserType;
 import static guru.qa.niffler.jupiter.extension.UsersQueueExtension.UserType.Type.*;
 
-@ExtendWith(UsersQueueExtension.class)
 @WebTest
 public class FriendsWebTest {
 

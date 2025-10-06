@@ -12,11 +12,11 @@ import org.junit.platform.commons.support.AnnotationSupport;
 
 import java.util.Date;
 
-public class CreateSpendingExtension implements
+public class SpendingExtension implements
     BeforeEachCallback,
     ParameterResolver {
 
-  public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(CreateSpendingExtension.class);
+  public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(SpendingExtension.class);
 
   private final SpendApiClient spendApiClient = new SpendApiClient();
 
@@ -55,7 +55,7 @@ public class CreateSpendingExtension implements
 
   @Override
   public SpendJson resolveParameter(ParameterContext parameterContext, ExtensionContext context) throws ParameterResolutionException {
-    return context.getStore(CreateSpendingExtension.NAMESPACE).get(context.getUniqueId(), SpendJson.class);
+    return context.getStore(SpendingExtension.NAMESPACE).get(context.getUniqueId(), SpendJson.class);
   }
 
 }
