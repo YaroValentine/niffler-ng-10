@@ -6,34 +6,19 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 public class TestMethodContextExtension implements BeforeEachCallback, AfterEachCallback {
 
+  private static final ThreadLocal<ExtensionContext> ctxStore = new ThreadLocal<>();
+
   @Override
-  public void beforeEach(ExtensionContext context) {
-    Holder.INSTANCE.set(context);
+  public void beforeEach(ExtensionContext context) throws Exception {
+    ctxStore.set(context);
   }
 
   @Override
-  public void afterEach(ExtensionContext context) {
-    Holder.INSTANCE.remove();
-  }
-
-  private enum Holder {
-    INSTANCE;
-
-    private final ThreadLocal<ExtensionContext> holder = new ThreadLocal<>();
-
-    public ExtensionContext get() {
-      return holder.get();
-    }
-    public void set(ExtensionContext context) {
-      holder.set(context);
-    }
-
-    public void remove() {
-      holder.remove();
-    }
+  public void afterEach(ExtensionContext context) throws Exception {
+    ctxStore.remove();
   }
 
   public static ExtensionContext context() {
-    return Holder.INSTANCE.get();
+    return ctxStore.get();
   }
 }
