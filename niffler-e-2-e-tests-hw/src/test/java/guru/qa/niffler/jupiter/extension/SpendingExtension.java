@@ -23,29 +23,40 @@ public class SpendingExtension implements
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
     AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), User.class)
-        .ifPresent(userAnno -> {
-          if (ArrayUtils.isNotEmpty(userAnno.spendings())) {
-            Spending spendAnno = userAnno.spendings()[0];
-            SpendJson spend = new SpendJson(
-                null,
-                new Date(),
-                new CategoryJson(
-                    null,
-                    spendAnno.category(),
-                    userAnno.username(),
-                    false
-                ),
-                CurrencyValues.RUB,
-                spendAnno.amount(),
-                spendAnno.description(),
-                userAnno.username()
-            );
-            context.getStore(NAMESPACE).put(
-                context.getUniqueId(),
-                spendApiClient.createSpend(spend)
-            );
-          }
-        });
+      .ifPresent(userAnno -> {
+        if (ArrayUtils.isNotEmpty(userAnno.spendings())) {
+          Spending spendAnno = userAnno.spendings()[0];
+
+          // Try to reuse a category created by CategoryExtension
+          CategoryJson generatedCategory = context
+            .getStore(CategoryExtension.NAMESPACE)
+            .get(context.getUniqueId(), CategoryJson.class);
+
+          CategoryJson categoryForSpend = generatedCategory != null
+            ? generatedCategory
+            : new CategoryJson(
+            null,
+            spendAnno.category(),
+            userAnno.username(),
+            false
+          );
+
+          SpendJson spend = new SpendJson(
+            null,
+            new Date(),
+            categoryForSpend,
+            CurrencyValues.RUB,
+            spendAnno.amount(),
+            spendAnno.description(),
+            userAnno.username()
+          );
+
+          context.getStore(NAMESPACE).put(
+            context.getUniqueId(),
+            spendApiClient.createSpend(spend)
+          );
+        }
+      });
   }
 
   @Override
