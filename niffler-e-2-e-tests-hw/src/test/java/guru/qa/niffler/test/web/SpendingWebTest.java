@@ -52,24 +52,27 @@ public class SpendingWebTest {
       .login("yaro", "secret")
       .mainPage().checkThatPageLoaded()
       .profilePage().open()
-      .clickShowArchivedCategories()
       .verifyCategoryExists(category.name());
-    System.out.println(category);
   }
 
   @User(
-    username = "example",
+    username = "yaro",
     categories = {@Category(
       archived = false
     )},
     spendings = {@Spending(
-      category = "example",
+      category = "",
       description = "example",
       amount = 11111
     )}
   )
   @Test
-  void syntaxExampleForTwoAnnotationsTest(CategoryJson category) {
+  void categoryWithSpendingTest(CategoryJson category) {
+    Selenide.open(CFG.frontUrl(), LoginPage.class)
+      .login("yaro", "secret")
+      .mainPage().checkThatPageLoaded()
+      .profilePage().open()
+      .verifyCategoryExists(category.name());
   }
 
 }
