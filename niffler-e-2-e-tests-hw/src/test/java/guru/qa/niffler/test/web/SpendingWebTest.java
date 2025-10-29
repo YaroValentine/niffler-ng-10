@@ -44,11 +44,6 @@ public class SpendingWebTest {
     username = "yaro",
     categories = {@Category(
       archived = false
-    )},
-    spendings = {@Spending(
-      category = "Обучение",
-      description = "Обучение Advanced 2.0",
-      amount = 79990
     )}
   )
   @Test
@@ -60,6 +55,21 @@ public class SpendingWebTest {
       .clickShowArchivedCategories()
       .verifyCategoryExists(category.name());
     System.out.println(category);
+  }
+
+  @User(
+    username = "example",
+    categories = {@Category(
+      archived = false
+    )},
+    spendings = {@Spending(
+      category = "example",
+      description = "example",
+      amount = 11111
+    )}
+  )
+  @Test
+  void syntaxExampleForTwoAnnotationsTest(CategoryJson category) {
   }
 
 }
