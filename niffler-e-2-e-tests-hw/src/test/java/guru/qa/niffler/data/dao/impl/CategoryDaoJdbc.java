@@ -17,9 +17,9 @@ public class CategoryDaoJdbc implements CategoryDao {
   public CategoryEntity create(CategoryEntity category) {
     try (Connection connection = Databases.connection(CFG.spendJdbcUrl())) {
       try (PreparedStatement ps = connection.prepareStatement(
-        "INSERT INTO category (username, name, archived) " +
-        "VALUES (?, ?, ?)",
-        Statement.RETURN_GENERATED_KEYS
+          "INSERT INTO category (username, name, archived) " +
+              "VALUES (?, ?, ?)",
+          Statement.RETURN_GENERATED_KEYS
       )) {
         ps.setString(1, category.getUsername());
         ps.setString(2, category.getName());
@@ -43,17 +43,14 @@ public class CategoryDaoJdbc implements CategoryDao {
     }
   }
 
-
   @Override
   public Optional<CategoryEntity> findCategoryById(UUID id) {
     try (Connection connection = Databases.connection(CFG.spendJdbcUrl())) {
       try (PreparedStatement ps = connection.prepareStatement(
-        "SELECT * FROM category WHERE id = ?"
-        )) {
+          "SELECT * FROM category WHERE id = ?"
+      )) {
         ps.setObject(1, id);
-
         ps.execute();
-
         try (ResultSet rs = ps.getResultSet()) {
           if (rs.next()) {
             CategoryEntity ce = new CategoryEntity();
@@ -61,9 +58,7 @@ public class CategoryDaoJdbc implements CategoryDao {
             ce.setUsername(rs.getString("username"));
             ce.setName(rs.getString("name"));
             ce.setArchived(rs.getBoolean("archived"));
-            return Optional.of(
-              ce
-            );
+            return Optional.of(ce);
           } else {
             return Optional.empty();
           }

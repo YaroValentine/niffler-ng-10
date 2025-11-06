@@ -22,6 +22,5 @@ public class CategoryEntity implements Serializable {
     ce.setUsername(json.username());
     ce.setArchived(json.archived());
     return ce;
-    }
-
+  }
 }

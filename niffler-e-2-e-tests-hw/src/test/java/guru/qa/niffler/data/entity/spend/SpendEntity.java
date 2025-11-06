@@ -25,15 +25,14 @@ public class SpendEntity implements Serializable {
     se.setId(json.id());
     se.setUsername(json.username());
     se.setCurrency(json.currency());
-    se.setSpendDate(new java.sql.Date(json.spendDate().getTime()));
+    se.setSpendDate(new Date(json.spendDate().getTime()));
     se.setAmount(json.amount());
     se.setDescription(json.description());
     se.setCategory(
-      CategoryEntity.fromJson(
-        json.category()
-      )
+        CategoryEntity.fromJson(
+            json.category()
+        )
     );
     return se;
   }
-
 }
