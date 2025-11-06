@@ -1,9 +1,8 @@
 package guru.qa.niffler.test.rest;
 
 import guru.qa.niffler.RandomDataUtils;
-import guru.qa.niffler.service.AuthApiClient;
+import guru.qa.niffler.api.AuthApiClient;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import retrofit2.Response;
 

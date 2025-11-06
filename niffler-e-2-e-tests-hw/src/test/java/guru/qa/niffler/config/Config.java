@@ -14,7 +14,13 @@ public interface Config {
 
   String userdataUrl();
 
+  String userdataJdbcUrl();
+
   String spendUrl();
+
+  String spendJdbcUrl();
+
+  String currencyJdbcUrl();
 
   String ghUrl();
 }
