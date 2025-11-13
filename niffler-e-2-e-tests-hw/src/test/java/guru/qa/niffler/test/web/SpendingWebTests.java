@@ -14,7 +14,7 @@ import guru.qa.niffler.page.MainPage;
 import org.junit.jupiter.api.Test;
 
 @WebTest
-public class SpendingWebTest {
+public class SpendingWebTests {
 
   private static final Config CFG = Config.getInstance();
 

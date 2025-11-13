@@ -10,7 +10,7 @@ import guru.qa.niffler.page.LoginPage;
 import org.junit.jupiter.api.Test;
 
 @WebTest
-public class ProfileWebTest {
+public class ProfileWebTests {
 
   private static final Config CFG = Config.getInstance();
 

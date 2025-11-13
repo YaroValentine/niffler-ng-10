@@ -6,6 +6,7 @@ import guru.qa.niffler.data.dao.CategoryDao;
 import guru.qa.niffler.data.entity.spend.CategoryEntity;
 
 import java.sql.*;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -70,7 +71,44 @@ public class CategoryDaoJdbc implements CategoryDao {
   }
 
   @Override
+  public Optional<CategoryEntity> findCategoryByUsernameAndCategoryName(String username, String categoryName) {
+    try (Connection connection = Databases.connection(CFG.spendJdbcUrl())) {
+      try (PreparedStatement ps = connection.prepareStatement(
+        "SELECT * FROM category where username = ? and name = ?"
+      )) {
+        ps.setObject(1, username);
+        ps.setObject(2, categoryName);
+        ps.execute();
+        try (ResultSet rs = ps.getResultSet()) {
+          if (rs.next()) {
+            CategoryEntity ce = new CategoryEntity();
+            ce.setId(rs.getObject("id", UUID.class));
+            ce.setUsername(rs.getString("username"));
+            ce.setName(rs.getString("name"));
+            ce.setArchived(rs.getBoolean("archived"));
+            return Optional.of(ce);
+          } else {
+            return Optional.empty();
+          }
+        }
+      }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public List<CategoryEntity> findAllByUsername(String username, String categoryName) {
+    return List.of();
+  }
+
+  @Override
   public CategoryEntity update(CategoryEntity categoryEntity) {
     throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void deleteCategoryById(CategoryEntity categoryEntity) {
+
   }
 }
