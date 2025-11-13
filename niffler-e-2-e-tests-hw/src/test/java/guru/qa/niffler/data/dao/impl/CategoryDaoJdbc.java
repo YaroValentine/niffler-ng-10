@@ -99,16 +99,73 @@ public class CategoryDaoJdbc implements CategoryDao {
 
   @Override
   public List<CategoryEntity> findAllByUsername(String username, String categoryName) {
-    return List.of();
+    try (Connection connection = Databases.connection(CFG.spendJdbcUrl())) {
+      final String baseSql = "SELECT * FROM category WHERE username = ?";
+      final boolean filterByName = categoryName != null && !categoryName.isEmpty();
+      final String sql = filterByName ? baseSql + " AND name = ? ORDER BY name" : baseSql + " ORDER BY name";
+
+      try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setString(1, username);
+        if (filterByName) {
+          ps.setString(2, categoryName);
+        }
+        ps.execute();
+        try (ResultSet rs = ps.getResultSet()) {
+          java.util.ArrayList<CategoryEntity> result = new java.util.ArrayList<>();
+          while (rs.next()) {
+            CategoryEntity ce = new CategoryEntity();
+            ce.setId(rs.getObject("id", UUID.class));
+            ce.setUsername(rs.getString("username"));
+            ce.setName(rs.getString("name"));
+            ce.setArchived(rs.getBoolean("archived"));
+            result.add(ce);
+          }
+          return result;
+        }
+      }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
   public CategoryEntity update(CategoryEntity categoryEntity) {
-    throw new UnsupportedOperationException();
+    if (categoryEntity == null || categoryEntity.getId() == null) {
+      throw new IllegalArgumentException("Category or category id must not be null");
+    }
+    try (Connection connection = Databases.connection(CFG.spendJdbcUrl())) {
+      try (PreparedStatement ps = connection.prepareStatement(
+          "UPDATE category SET name = ?, username = ?, archived = ? WHERE id = ?"
+      )) {
+        ps.setString(1, categoryEntity.getName());
+        ps.setString(2, categoryEntity.getUsername());
+        ps.setBoolean(3, categoryEntity.isArchived());
+        ps.setObject(4, categoryEntity.getId());
+        int updated = ps.executeUpdate();
+        if (updated == 0) {
+          throw new RuntimeException("No category updated for id=" + categoryEntity.getId());
+        }
+        return categoryEntity;
+      }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
   public void deleteCategoryById(CategoryEntity categoryEntity) {
-
+    if (categoryEntity == null || categoryEntity.getId() == null) {
+      throw new IllegalArgumentException("Category or category id must not be null");
+    }
+    try (Connection connection = Databases.connection(CFG.spendJdbcUrl())) {
+      try (PreparedStatement ps = connection.prepareStatement(
+          "DELETE FROM category WHERE id = ?"
+      )) {
+        ps.setObject(1, categoryEntity.getId());
+        ps.executeUpdate();
+      }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
