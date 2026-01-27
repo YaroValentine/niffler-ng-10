@@ -1,35 +1,35 @@
 package guru.qa.niffler.jupiter.extension;
 
-import guru.qa.niffler.api.SpendApiClient;
 import guru.qa.niffler.jupiter.annotation.Spending;
-import guru.qa.niffler.jupiter.annotation.User;
+import guru.qa.niffler.jupiter.annotation.UserDb;
 import guru.qa.niffler.model.CategoryJson;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
+import guru.qa.niffler.service.SpendDbClient;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 
 import java.util.Date;
 
-public class SpendingExtension implements
+public class SpendingDaoExtension implements
     BeforeEachCallback,
     ParameterResolver {
 
-  public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(SpendingExtension.class);
+  public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(SpendingDaoExtension.class);
 
-  private final SpendApiClient spendApiClient = new SpendApiClient();
+  private final SpendDbClient spendDbClient = new SpendDbClient();
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
-    AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), User.class)
+    AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), UserDb.class)
       .ifPresent(userAnno -> {
         if (ArrayUtils.isNotEmpty(userAnno.spendings())) {
           Spending spendAnno = userAnno.spendings()[0];
 
-          // Try to reuse a category created by CategoryExtension
+          // Try to reuse a category created by CategoryDaoExtension
           CategoryJson generatedCategory = context
-            .getStore(CategoryExtension.NAMESPACE)
+            .getStore(CategoryDaoExtension.NAMESPACE)
             .get(context.getUniqueId(), CategoryJson.class);
 
           CategoryJson categoryForSpend = generatedCategory != null
@@ -53,7 +53,7 @@ public class SpendingExtension implements
 
           context.getStore(NAMESPACE).put(
             context.getUniqueId(),
-            spendApiClient.createSpend(spend)
+            spendDbClient.createSpend(spend)
           );
         }
       });
@@ -66,7 +66,6 @@ public class SpendingExtension implements
 
   @Override
   public SpendJson resolveParameter(ParameterContext parameterContext, ExtensionContext context) throws ParameterResolutionException {
-    return context.getStore(SpendingExtension.NAMESPACE).get(context.getUniqueId(), SpendJson.class);
+    return context.getStore(SpendingDaoExtension.NAMESPACE).get(context.getUniqueId(), SpendJson.class);
   }
-
 }

@@ -1,28 +1,28 @@
 package guru.qa.niffler.jupiter.extension;
 
 import guru.qa.niffler.RandomDataUtils;
-import guru.qa.niffler.api.SpendApiClient;
 import guru.qa.niffler.jupiter.annotation.Category;
-import guru.qa.niffler.jupiter.annotation.User;
+import guru.qa.niffler.jupiter.annotation.UserDb;
 import guru.qa.niffler.model.CategoryJson;
+import guru.qa.niffler.service.CategoryDbClient;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 
-public class CategoryExtension implements
+public class CategoryDaoExtension implements
     BeforeEachCallback,
     AfterEachCallback,
     ParameterResolver {
 
-  public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(CategoryExtension.class);
+  public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(CategoryDaoExtension.class);
 
-  private final SpendApiClient spendApiClient = new SpendApiClient();
+  private final CategoryDbClient categoryDbClient = new CategoryDbClient();
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
     // Set Up:
     // Add random category before test
-    AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), User.class)
+    AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), UserDb.class)
         .ifPresent(userAnno -> {
           if (ArrayUtils.isNotEmpty(userAnno.categories())) {
             Category categoryAnno = userAnno.categories()[0];
@@ -33,16 +33,8 @@ public class CategoryExtension implements
                 categoryAnno.archived()
             );
 
-            CategoryJson created = spendApiClient.addCategory(category);
-            if (categoryAnno.archived()) {
-              CategoryJson archivedCategory = new CategoryJson(
-                  created.id(),
-                  created.name(),
-                  created.username(),
-                  true
-              );
-              created = spendApiClient.updateCategory(archivedCategory);
-            }
+            // DB allows creating category with archived status directly (no business logic)
+            CategoryJson created = categoryDbClient.createCategory(category);
 
             context.getStore(NAMESPACE).put(
                 context.getUniqueId(),
@@ -64,7 +56,7 @@ public class CategoryExtension implements
           category.username(),
           true
       );
-      spendApiClient.updateCategory(updatedCategory);
+      categoryDbClient.updateCategory(updatedCategory);
     }
   }
 

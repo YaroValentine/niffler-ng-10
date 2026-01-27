@@ -1,7 +1,6 @@
-package guru.qa.niffler.service;
+package guru.qa.niffler.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import guru.qa.niffler.api.GhApi;
 import guru.qa.niffler.config.Config;
 import lombok.SneakyThrows;
 import retrofit2.Retrofit;

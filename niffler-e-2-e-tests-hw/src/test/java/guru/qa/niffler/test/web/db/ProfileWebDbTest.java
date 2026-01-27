@@ -1,20 +1,20 @@
-package guru.qa.niffler.test.web;
+package guru.qa.niffler.test.web.db;
 
 import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.config.Config;
 import guru.qa.niffler.jupiter.annotation.Category;
-import guru.qa.niffler.jupiter.annotation.User;
+import guru.qa.niffler.jupiter.annotation.UserDb;
 import guru.qa.niffler.jupiter.annotation.meta.WebTest;
 import guru.qa.niffler.model.CategoryJson;
 import guru.qa.niffler.page.LoginPage;
 import org.junit.jupiter.api.Test;
 
 @WebTest
-public class ProfileWebTest {
+public class ProfileWebDbTest {
 
   private static final Config CFG = Config.getInstance();
 
-  @User(
+  @UserDb(
       username = "yaro",
       categories = @Category(
           archived = true
@@ -30,7 +30,7 @@ public class ProfileWebTest {
         .verifyCategoryExists(category.name());
   }
 
-  @User(
+  @UserDb(
       username = "yaro",
       categories = @Category(
           archived = false
