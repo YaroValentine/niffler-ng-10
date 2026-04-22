@@ -14,6 +14,7 @@ import java.util.Date;
 
 public class SpendingDaoExtension implements
     BeforeEachCallback,
+    AfterEachCallback,
     ParameterResolver {
 
   public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(SpendingDaoExtension.class);
@@ -57,6 +58,14 @@ public class SpendingDaoExtension implements
           );
         }
       });
+  }
+
+  @Override
+  public void afterEach(ExtensionContext context) throws Exception {
+    SpendJson spend = context.getStore(NAMESPACE).get(context.getUniqueId(), SpendJson.class);
+    if (spend != null) {
+      spendDbClient.deleteSpend(spend);
+    }
   }
 
   @Override

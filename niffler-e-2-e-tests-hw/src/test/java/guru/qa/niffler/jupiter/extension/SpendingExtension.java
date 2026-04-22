@@ -11,9 +11,11 @@ import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 
 import java.util.Date;
+import java.util.List;
 
 public class SpendingExtension implements
     BeforeEachCallback,
+    AfterEachCallback,
     ParameterResolver {
 
   public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(SpendingExtension.class);
@@ -57,6 +59,14 @@ public class SpendingExtension implements
           );
         }
       });
+  }
+
+  @Override
+  public void afterEach(ExtensionContext context) throws Exception {
+    SpendJson spend = context.getStore(NAMESPACE).get(context.getUniqueId(), SpendJson.class);
+    if (spend != null) {
+      spendApiClient.removeSpend(spend.username(), List.of(spend.id().toString()));
+    }
   }
 
   @Override
