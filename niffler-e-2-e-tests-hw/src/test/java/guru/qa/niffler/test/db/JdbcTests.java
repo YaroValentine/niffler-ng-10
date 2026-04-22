@@ -1,10 +1,10 @@
-package guru.qa.niffler.test;
+package guru.qa.niffler.test.db;
 
 import guru.qa.niffler.model.CategoryJson;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
-import guru.qa.niffler.service.CategoryDbClient;
-import guru.qa.niffler.service.SpendDbClient;
+import guru.qa.niffler.service.db.CategoryDbClient;
+import guru.qa.niffler.service.db.SpendDbClient;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;

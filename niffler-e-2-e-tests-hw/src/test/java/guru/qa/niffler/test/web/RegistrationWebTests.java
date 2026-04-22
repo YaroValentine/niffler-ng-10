@@ -6,7 +6,7 @@ import guru.qa.niffler.page.LoginPage;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Selenide.open;
-import static guru.qa.niffler.RandomDataUtils.randomUsername;
+import static guru.qa.niffler.utils.RandomDataUtils.randomUsername;
 
 @WebTest
 public class RegistrationWebTests {

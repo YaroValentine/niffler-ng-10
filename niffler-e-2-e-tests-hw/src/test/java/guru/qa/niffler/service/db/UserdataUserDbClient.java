@@ -1,4 +1,4 @@
-package guru.qa.niffler.service;
+package guru.qa.niffler.service.db;
 
 import guru.qa.niffler.config.Config;
 import guru.qa.niffler.data.dao.impl.UserdataUserDaoJdbc;

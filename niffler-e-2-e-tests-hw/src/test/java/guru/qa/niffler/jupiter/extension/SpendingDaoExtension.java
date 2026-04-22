@@ -5,7 +5,7 @@ import guru.qa.niffler.jupiter.annotation.UserDb;
 import guru.qa.niffler.model.CategoryJson;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
-import guru.qa.niffler.service.SpendDbClient;
+import guru.qa.niffler.service.db.SpendDbClient;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;

@@ -3,7 +3,7 @@ package guru.qa.niffler.test.db;
 import guru.qa.niffler.data.entity.auth.AuthAuthorityEntity;
 import guru.qa.niffler.data.entity.auth.AuthUserEntity;
 import guru.qa.niffler.data.entity.auth.Authority;
-import guru.qa.niffler.service.AuthUserDbClient;
+import guru.qa.niffler.service.db.AuthUserDbClient;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
